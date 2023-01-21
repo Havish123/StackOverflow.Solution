@@ -3,15 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackOverflow.Solution.Data", "StackOverflow.Solution.Data\StackOverflow.Solution.Data.csproj", "{6F8743FD-8463-47BC-9766-AE01B8F29F48}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackOverflow.Solution.Data", "StackOverflow.Solution.Data\StackOverflow.Solution.Data.csproj", "{6F8743FD-8463-47BC-9766-AE01B8F29F48}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackOverflow.Solution.DTO", "StackOverflow.Solution.DTO\StackOverflow.Solution.DTO.csproj", "{797658C2-C4F9-4FB9-9ACF-E0FEA8A455ED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackOverflow.Solution.DTO", "StackOverflow.Solution.DTO\StackOverflow.Solution.DTO.csproj", "{797658C2-C4F9-4FB9-9ACF-E0FEA8A455ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackOverflow.Solution.Services", "StackOverflow.Solution.Services\StackOverflow.Solution.Services.csproj", "{6D02DD02-43ED-4CA7-82DB-58008747D99F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackOverflow.Solution.Services", "StackOverflow.Solution.Services\StackOverflow.Solution.Services.csproj", "{6D02DD02-43ED-4CA7-82DB-58008747D99F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackOverflow.Solution.MVC", "StackOverflow.Solution.MVC\StackOverflow.Solution.MVC.csproj", "{08DC431A-925F-4A9E-8040-77932866686F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackOverflow.Solution.MVC", "StackOverflow.Solution.MVC\StackOverflow.Solution.MVC.csproj", "{08DC431A-925F-4A9E-8040-77932866686F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackOverflow.Solution.API", "StackOverflow.Solution.API\StackOverflow.Solution.API.csproj", "{273DE931-C4BD-4134-AA9E-1AFA96FFDC5A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "StackOverflow.Solution.API", "StackOverflow.Solution.API\StackOverflow.Solution.API.csproj", "{273DE931-C4BD-4134-AA9E-1AFA96FFDC5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StackOverflow.Solution.Authenticate", "StackOverflow.Solution.Authenticate\StackOverflow.Solution.Authenticate.csproj", "{9B0C9437-FE1A-4BC9-8AE9-42ADEAC4DCE7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{273DE931-C4BD-4134-AA9E-1AFA96FFDC5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{273DE931-C4BD-4134-AA9E-1AFA96FFDC5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{273DE931-C4BD-4134-AA9E-1AFA96FFDC5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B0C9437-FE1A-4BC9-8AE9-42ADEAC4DCE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B0C9437-FE1A-4BC9-8AE9-42ADEAC4DCE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B0C9437-FE1A-4BC9-8AE9-42ADEAC4DCE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B0C9437-FE1A-4BC9-8AE9-42ADEAC4DCE7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
