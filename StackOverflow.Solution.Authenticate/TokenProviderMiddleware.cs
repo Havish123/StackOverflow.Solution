@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace StackOverflow.Solution.Authenticate
@@ -79,14 +81,30 @@ namespace StackOverflow.Solution.Authenticate
 
                 var jwt = new JwtSecurityToken(
                         issuer: _options.Issuer,
-                        audience:_options.Audience
+                        audience:_options.Audience,
+                        notBefore:now,
+                        claims:identity.Claims,
+                        expires:now.Add(_options.Expiration),
+                        signingCredentials:_options.SigningCredentials                  
 
                     );
+
+                var encodedJwt=new JwtSecurityTokenHandler().WriteToken(jwt);
+
+                var response = new
+                {
+                    access_token=encodedJwt,
+                    expires=(int)_options.Expiration.TotalSeconds
+                };
+
+                context.Response.ContentType="application/json";
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(response, 
+                    new JsonSerializerSettings { Formatting = Formatting.Indented }));
 
 
             }catch(Exception e)
             {
-
+                throw e;
             }
         }
 
