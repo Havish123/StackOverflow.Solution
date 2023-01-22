@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using StackOverflow.Solution.Authenticate;
 using StackOverflow.Solution.Data.DatabaseContext;
@@ -49,7 +50,7 @@ builder.Services.AddDbContext<StackOverflowContext>(option => option.UseSqlServe
 
 builder.Services.AddAuthentication().AddJwtBearer(options =>
 {
-    options.Audience = "Different Projects";
+    options.Audience = "Different projects";
     options.ClaimsIssuer = "stackoverflow.hmaths.com";
     options.TokenValidationParameters = GetSigningKey();
 
@@ -72,12 +73,12 @@ if (app.Environment.IsDevelopment())
 
 var options = new TokenProviderOptions
 {
-    Audience = "Different Projects",
+    Audience = "Different projects",
     Issuer= "stackoverflow.hmaths.com",
     SigningCredentials=new SigningCredentials(signingKey,SecurityAlgorithms.HmacSha512)
 };
-
-//app.UseMiddleware(options.cre)
+//app.UseMiddleware(Options.Create<TokenProviderOptions>(options));
+app.UseMiddleware<TokenProviderMiddleware>(Options.Create(options));
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
