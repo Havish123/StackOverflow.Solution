@@ -16,3 +16,26 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.loginbtn {
+    position: absolute;
+    top: 8px;
+    right: 270px;
+    font-size: 18px;
+}
+.signupbtn {
+    position: absolute;
+    top: 8px;
+    right: 170px;
+    font-size: 18px;
+}
+.btn-success {
+    color: #fff;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+}
+    .btn-success:hover {
+        color: #fff;
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
