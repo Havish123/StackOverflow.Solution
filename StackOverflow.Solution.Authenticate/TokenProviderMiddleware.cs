@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace StackOverflow.Solution.Authenticate
@@ -16,15 +18,15 @@ namespace StackOverflow.Solution.Authenticate
         private readonly RequestDelegate _next;
         private readonly TokenProviderOptions _options;
 
-        public TokenProviderMiddleware(RequestDelegate next, TokenProviderOptions options)
+        public TokenProviderMiddleware(RequestDelegate next, IOptions<TokenProviderOptions> options)
         {
             _next = next;
-            _options = options;
+            _options = options.Value;
         }
 
         public Task Invoke(HttpContext httpContext)
         {
-            if (httpContext.Request.Path.Equals(_options.Path, StringComparison.OrdinalIgnoreCase))
+            if (!httpContext.Request.Path.Equals(_options.Path, StringComparison.OrdinalIgnoreCase))
             {
                 return _next(httpContext);
             }
@@ -33,16 +35,16 @@ namespace StackOverflow.Solution.Authenticate
                 httpContext.Response.StatusCode = 400;
                 return httpContext.Response.WriteAsync("Bad Request");
             }
-            return _next(httpContext);
+            return GenerateToken(httpContext);
         }
 
         //Collect UserClaims if the Username and password is correcct
-        private ClaimsIdentity GetIdentity(string username, string password)
+        private Task<ClaimsIdentity> GetIdentity(string username, string password)
         {
             var guid = Guid.NewGuid().ToString();
             if (username == "test" && password == "test")
             {
-                return new ClaimsIdentity
+                return Task.FromResult(new ClaimsIdentity
                     (new System.Security.Principal.GenericIdentity(username, "Token"),
                     new Claim[]
                     {
@@ -50,9 +52,9 @@ namespace StackOverflow.Solution.Authenticate
                     new Claim("jti",guid),
                     new Claim("iat",DateTime.UtcNow.ToString(),ClaimValueTypes.Integer)
                     }
-                    );
+                    ));
             }
-            return null;
+            return Task.FromResult<ClaimsIdentity>(null);
         }
 
         //Generate JWT Token
@@ -60,7 +62,7 @@ namespace StackOverflow.Solution.Authenticate
         {
             string username = "test";
             string password = "test";
-            var identity = GetIdentity(username, password);
+            var identity =await GetIdentity(username, password);
 
             if (identity == null)
             {
@@ -79,14 +81,30 @@ namespace StackOverflow.Solution.Authenticate
 
                 var jwt = new JwtSecurityToken(
                         issuer: _options.Issuer,
-                        audience:_options.Audience
+                        audience:_options.Audience,
+                        notBefore:now,
+                        claims:identity.Claims,
+                        expires:now.Add(_options.Expiration),
+                        signingCredentials:_options.SigningCredentials                  
 
                     );
+
+                var encodedJwt=new JwtSecurityTokenHandler().WriteToken(jwt);
+
+                var response = new
+                {
+                    access_token=encodedJwt,
+                    expires=(int)_options.Expiration.TotalSeconds
+                };
+
+                context.Response.ContentType="application/json";
+                await context.Response.WriteAsync(JsonConvert.SerializeObject(response, 
+                    new JsonSerializerSettings { Formatting = Formatting.Indented }));
 
 
             }catch(Exception e)
             {
-
+                throw e;
             }
         }
 
