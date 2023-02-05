@@ -15,9 +15,16 @@ namespace StackOverflow.Solution.API.Controllers
             _authenticateService= authenticateService;
         }
         [HttpGet]
+        [Route("token")]
         public ResultDto GetToken()
         {
             return _authenticateService.GetToken();
+        }
+        [HttpGet]
+        [Route("Sample")]
+        public ResultDto Sample()
+        {
+            return new ResultDto();
         }
     }
 }

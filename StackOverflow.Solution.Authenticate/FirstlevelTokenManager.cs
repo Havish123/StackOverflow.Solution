@@ -15,7 +15,7 @@ namespace StackOverflow.Solution.Authenticate
     {
         public static string GenerateToken(List<Claim> claims)
         {
-           var tokenHandler=new JwtSecurityTokenHandler() { TokenLifetimeInMinutes=Config.firstlevelliftTime };
+           var tokenHandler=new JwtSecurityTokenHandler() { TokenLifetimeInMinutes= (int)Config.firstlevelliftTime };
 
             // Create a security key
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Config.LoginApiTokenKey));

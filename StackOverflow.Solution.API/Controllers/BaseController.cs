@@ -7,7 +7,6 @@ using Microsoft.VisualBasic;
 using Newtonsoft.Json;
 using StackOverflow.Solution.DTO;
 using StackOverflow.Solution.DTO.Common;
-using StackOverflow.Solution.DTO.Enums;
 using StackOverflow.Solution.Helper;
 using System.Net;
 using System.Web.Http;

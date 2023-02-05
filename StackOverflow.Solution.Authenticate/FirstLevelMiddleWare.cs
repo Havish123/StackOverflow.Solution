@@ -11,6 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using StackOverflow.Solution.Authenticate.Common;
+using Newtonsoft.Json.Linq;
 
 namespace StackOverflow.Solution.Authenticate
 {
@@ -45,7 +46,7 @@ namespace StackOverflow.Solution.Authenticate
 
                 //Token time out is less for the token generated through app/web key verification than the login validation
               
-                principal = AuthHelper.ValidateBasicToken(jwtToken, out newToken, Config.firstlevelliftTime);
+                principal = AuthHelper.ValidateBasicToken(jwtToken, out newToken, (int)Config.firstlevelliftTime);
 
                 if (!IsCustomSystemTokenValid(principal, context.Request))
                 {
@@ -53,8 +54,8 @@ namespace StackOverflow.Solution.Authenticate
                     return Task.FromResult(response);
                 }
                 context.User = principal;
-                context.Response.Headers.Add("Authorization", "Bearer " + newToken);
-
+                context.Response.Headers.Add("Authorization", "BaseToken " + newToken);
+                context.Items["BaseToken"] = newToken;
 
                 return _next.Invoke(context);
             }
@@ -120,7 +121,7 @@ namespace StackOverflow.Solution.Authenticate
             {
                 return false;
             }
-            return false;
+            return true;
         }
     }
 }
