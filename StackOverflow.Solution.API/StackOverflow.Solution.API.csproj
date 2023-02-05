@@ -21,6 +21,12 @@
     <ProjectReference Include="..\StackOverflow.Solution.Authenticate\StackOverflow.Solution.Authenticate.csproj" />
     <ProjectReference Include="..\StackOverflow.Solution.Data\StackOverflow.Solution.Data.csproj" />
     <ProjectReference Include="..\StackOverflow.Solution.DTO\StackOverflow.Solution.DTO.csproj" />
+    <ProjectReference Include="..\StackOverflow.Solution.Helper\StackOverflow.Solution.Helper.csproj" />
+    <ProjectReference Include="..\StackOverflow.Solution.Services\StackOverflow.Solution.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Common\" />
   </ItemGroup>
 
 </Project>

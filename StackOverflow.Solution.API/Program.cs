@@ -4,39 +4,14 @@ using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using StackOverflow.Solution.Authenticate;
 using StackOverflow.Solution.Data.DatabaseContext;
+using StackOverflow.Solution.Helper;
+using StackOverflow.Solution.Services;
+using System.Configuration;
 using System.Text;
 
 
-var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("drUNFZEpjBXiNHcDYdjXoYi"));
-
-TokenValidationParameters GetSigningKey()
-{
-    //var signingKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes("drUNFZEpjBXiNHcDYdjXoYi"));
-
-    var tokenValidationParameters = new TokenValidationParameters
-    {
-        //The signing key must be match
-        ValidateIssuerSigningKey=true,
-        IssuerSigningKey=signingKey,
-
-        //Validate the JWT Issuere(iss) claim
-        ValidateIssuer=true,
-        ValidIssuer= "stackoverflow.hmaths.com",
-
-        //validate the JWT Audience (aud) claim
-        ValidateAudience=true,
-        ValidAudience="Different projects",
-
-        //Validate the token expiry
-        ValidateLifetime=true,
 
 
-        //set the certain amount of clock drift
-        ClockSkew=TimeSpan.Zero
-    };
-
-    return tokenValidationParameters;
-}
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,17 +19,14 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.Configure<Config>(builder.Configuration.GetSection("Config"));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddDbContext<StackOverflowContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
+builder.Services.AddDbContext<StackOverflowContext>(option => option.UseSqlServer(Config.ConnectionString));
 
-builder.Services.AddAuthentication().AddJwtBearer(options =>
-{
-    options.Audience = "Different projects";
-    options.ClaimsIssuer = "stackoverflow.hmaths.com";
-    options.TokenValidationParameters = GetSigningKey();
+builder.Services.AddTransient<IAuthenticateService, AuthenticateService>();
 
-});
+
 
 //builder.Services.AddMvc(options =>
 //{
@@ -71,18 +43,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-var options = new TokenProviderOptions
-{
-    Audience = "Different projects",
-    Issuer= "stackoverflow.hmaths.com",
-    SigningCredentials=new SigningCredentials(signingKey,SecurityAlgorithms.HmacSha512)
-};
+
 //app.UseMiddleware(Options.Create<TokenProviderOptions>(options));
-app.UseMiddleware<TokenProviderMiddleware>(Options.Create(options));
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
-
+app.UseMiddleware<FirstLevelMiddleWare>();
 app.MapControllers();
 
 app.Run();

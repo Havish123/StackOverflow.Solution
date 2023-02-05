@@ -10,8 +10,4 @@
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\StackOverflow.Solution.Services\StackOverflow.Solution.Services.csproj" />
-  </ItemGroup>
-
 </Project>

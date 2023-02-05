@@ -1,6 +1,4 @@
 ﻿using Newtonsoft.Json;
-using StackOverflow.Solution.DTO.Enums;
-using StackOverflow.Solution.Services.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +6,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StackOverflow.Solution.DTO.Common
+namespace StackOverflow.Solution.Helper
 {
     public static class HelperTool
     {
@@ -26,11 +24,11 @@ namespace StackOverflow.Solution.DTO.Common
             var dtoJson = ConvertObjectToJson(input);
             return EncryptDecrypt(dtoJson, Config.EncryptionKey, EncryptMode.ENCRYPT, Config.VectorKey);
         }
-       
+
 
         public static string ConvertObjectToJson(object input)
         {
-            var jsonString=JsonConvert.SerializeObject(input);
+            var jsonString = JsonConvert.SerializeObject(input);
             return jsonString;
         }
 
